@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WGT Golf Shot Calculator</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f6f9; color: #333; padding: 15px; }
+        input, select, button { padding: 10px; margin: 5px 0; border-radius: 5px; border: 1px solid #ccc; width: 100%; box-sizing: border-box; }
+        button { background-color: #007BFF; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        .output { margin-top: 15px; padding: 15px; border-radius: 5px; background-color: #ffffff; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+    <h2>WGT Golf Shot Calculator</h2>
+
+    <label>Distance to Hole (yards): </label>
+    <input type="number" id="distance"><br>
+
+    <label>Elevation (+/- feet): </label>
+    <input type="number" id="elevation"><br>
+
+    <label>Wind Speed (mph): </label>
+    <input type="number" id="windSpeed"><br>
+
+    <label>Wind Direction: </label>
+    <select id="windDirection">
+        <option value="headwind">Headwind</option>
+        <option value="tailwind">Tailwind</option>
+        <option value="crosswind">Crosswind</option>
+    </select><br>
+
+    <label>Lie Condition: </label>
+    <select id="lieCondition">
+        <option value="fairway">Fairway</option>
+        <option value="tee">Tee</option>
+        <option value="light rough">Light Rough</option>
+        <option value="medium rough">Medium Rough</option>
+        <option value="heavy rough">Heavy Rough</option>
+        <option value="sand">Sand</option>
+    </select><br>
+
+    <label>Spin Level: </label>
+    <select id="spin">
+        <option value="mid">Mid Backspin</option>
+        <option value="threeQuarter">¾ Backspin</option>
+        <option value="full">Full Backspin</option>
+    </select><br>
+
+    <button onclick="calculateShot()">Calculate Shot</button>
+
+    <div class="output" id="result"></div>
+
+<script>
+function calculateShot() {
+    let dist = parseFloat(document.getElementById('distance').value);
+    let elev = parseFloat(document.getElementById('elevation').value);
+    let wind = parseFloat(document.getElementById('windSpeed').value);
+    let windDir = document.getElementById('windDirection').value;
+    let lie = document.getElementById('lieCondition').value;
+    let spin = document.getElementById('spin').value;
+
+    let adjustedDist = dist + (elev / 3);
+
+    if(windDir === "headwind") adjustedDist += wind;
+    else if(windDir === "tailwind") adjustedDist -= wind;
+
+    const lieAdjustments = { "fairway": 1, "tee": 1, "light rough": 1.05, "medium rough": 1.15, "heavy rough": 1.25, "sand": 1.3 };
+    adjustedDist *= lieAdjustments[lie];
+
+    const clubs = [
+        {club: "64° LW (Punch)", mid:50, threeQuarter:47, full:42},
+        {club: "60° LW (Punch)", mid:69, threeQuarter:63, full:58},
+        {club: "56° SW (Punch)", mid:84, threeQuarter:77, full:72},
+        {club: "PW", mid:119, threeQuarter:114, full:112},
+        {club: "9i", mid:133, threeQuarter:132, full:128},
+        {club: "8i", mid:151, threeQuarter:146, full:143},
+        {club: "7i", mid:161, threeQuarter:155, full:153},
+        {club: "6i", mid:174, threeQuarter:171, full:171},
+        {club: "5i", mid:190, threeQuarter:186, full:183},
+        {club: "4i", mid:201, threeQuarter:200, full:196},
+        {club: "3i", mid:218, threeQuarter:214, full:215},
+        {club: "3W", mid:263, threeQuarter:251, full:233},
+        {club: "Driver", mid:323, threeQuarter:311, full:292}
+    ];
+
+    let chosenClub = clubs.find(c => c[spin] >= adjustedDist);
+
+    if (!chosenClub) {
+        chosenClub = clubs[clubs.length - 1];
+    }
+
+    let powerPercent = (adjustedDist / chosenClub[spin]) * 100;
+
+    document.getElementById('result').innerHTML = 
+        `<strong>Adjusted Distance:</strong> ${adjustedDist.toFixed(1)} yards<br>
+         <strong>Recommended Club:</strong> ${chosenClub.club}<br>
+         <strong>Recommended Spin:</strong> ${spin === 'mid' ? 'Mid Backspin' : spin === 'threeQuarter' ? '¾ Backspin' : 'Full Backspin'}<br>
+         <strong>Power to Hit:</strong> ${powerPercent.toFixed(1)}%`;
+}
+</script>
+</body>
+</html>
