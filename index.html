@@ -2,27 +2,44 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>WGT Golf Shot Calculator</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f6f9; color: #333; padding: 15px; }
-        input, select, button { padding: 10px; margin: 5px 0; border-radius: 5px; border: 1px solid #ccc; width: 100%; box-sizing: border-box; }
-        button { background-color: #007BFF; color: white; border: none; cursor: pointer; }
-        button:hover { background-color: #0056b3; }
-        .output { margin-top: 15px; padding: 15px; border-radius: 5px; background-color: #ffffff; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #121212; color: #fff; padding: 15px; }
+        input, select, button {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: none;
+            width: 100%;
+            box-sizing: border-box;
+            background-color: #1e1e1e;
+            color: #fff;
+            font-size: 16px;
+        }
+        input:focus, select:focus { outline: none; }
+        button { background-color: #6200ea; cursor: pointer; }
+        button:hover { background-color: #3700b3; }
+        .output {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #1e1e1e;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
     </style>
 </head>
 <body>
     <h2>WGT Golf Shot Calculator</h2>
 
     <label>Distance to Hole (yards): </label>
-    <input type="number" id="distance"><br>
+    <input type="number" inputmode="numeric" pattern="[0-9]*" id="distance"><br>
 
     <label>Elevation (+/- feet): </label>
-    <input type="number" id="elevation"><br>
+    <input type="number" inputmode="numeric" pattern="[0-9]*" id="elevation"><br>
 
     <label>Wind Speed (mph): </label>
-    <input type="number" id="windSpeed"><br>
+    <input type="number" inputmode="numeric" pattern="[0-9]*" id="windSpeed"><br>
 
     <label>Wind Direction: </label>
     <select id="windDirection">
