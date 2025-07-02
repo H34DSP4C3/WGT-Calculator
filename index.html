@@ -48,14 +48,6 @@
         <option value="full">Full Backspin</option>
     </select><br>
 
-    <label>Green Speed: </label>
-    <select id="greenSpeed">
-        <option value="13">13 (Tournament)</option>
-        <option value="12">12 (Very Fast)</option>
-        <option value="11">11 (Fast)</option>
-        <option value="10">10 (Moderate)</option>
-    </select><br>
-
     <button onclick="calculateShot()">Calculate Shot</button>
 
     <div class="output" id="result"></div>
@@ -68,18 +60,11 @@ function calculateShot() {
     let windDir = document.getElementById('windDirection').value;
     let lie = document.getElementById('lieCondition').value;
     let spin = document.getElementById('spin').value;
-    let greenSpeed = document.getElementById('greenSpeed').value;
 
     let adjustedDist = dist + (elev / 3);
 
     if(windDir === "headwind") adjustedDist += (dist / 200) * wind;
     else if(windDir === "tailwind") adjustedDist -= (dist / 250) * wind;
-
-    if (greenSpeed == "13" && windDir === "tailwind") {
-        adjustedDist *= 0.93;
-    } else if (windDir === "headwind") {
-        adjustedDist *= 1.03;
-    }
 
     const lieAdjustments = { "fairway": 1, "tee": 1, "light rough": 1.05, "medium rough": 1.15, "heavy rough": 1.25, "sand": 1.3 };
     adjustedDist *= lieAdjustments[lie];
@@ -96,8 +81,8 @@ function calculateShot() {
         {club: "5i", mid:190, threeQuarter:186, full:183},
         {club: "4i", mid:201, threeQuarter:200, full:196},
         {club: "3i", mid:218, threeQuarter:214, full:215},
-        {club: "3W", mid:263, threeQuarter:251, full:260},
-        {club: "Driver", mid:323, threeQuarter:311, full:292}
+        {club: "3W", mid:233, threeQuarter:251, full:263},
+        {club: "Driver", mid:292, threeQuarter:311, full:320}
     ];
 
     let chosenClub = clubs.find(c => c[spin] >= adjustedDist) || clubs[clubs.length - 1];
